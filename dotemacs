@@ -1,0 +1,69 @@
+;; Package stuff
+(require 'package)
+(add-to-list 'package-archives
+	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(add-to-list 'package-archives
+	     '("marmalade" . "http://marmalade-repo.org/packages/") t)
+
+;; Theme stuff
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
+(load-theme 'zenburn t)
+
+;; Lisp Stuff
+(define-abbrev-table 'scheme-mode-abbrev-table
+  '(("lambda" "λ" nil 1)))
+(setq default-abbrev-mode t)
+
+(global-set-key (kbd "C-x m") 'magit-status)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(git-commit-mode-hook (quote (turn-on-auto-fill)))
+ '(haskell-mode-hook (quote (turn-on-haskell-indentation))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(default ((t (:inherit nil :stipple nil :background "#3F3F3F" :foreground "#DCDCCC" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 110 :width normal :foundry "unknown" :family "DejaVu Sans Mono")))))
+
+(require 'tramp)
+
+(require 'ido)
+(setq ido-enable-flex-matching t)
+(setq ido-everywhere t)
+(ido-mode t)
+
+;; Custom modes
+(add-to-list 'load-path "~/.emacs.d/modes/")
+(autoload 'alloy-mode "alloy-mode" "Mode for Alloy" t)
+(setq auto-mode-alist (cons '("\\.als$" . alloy-mode) auto-mode-alist))
+(autoload 'dafny-mode "dafny-mode" "Mode for Dafny" t)
+(setq auto-mode-alist (cons '("\\.dfy$" . dafny-mode) auto-mode-alist))
+
+(require 'cl)
+(setq auto-mode-alist (cons '("\\.\\(pde\\|ino\\|inoc\\)$" . arduino-mode) auto-mode-alist))
+(autoload 'arduino-mode "arduino-mode" "Mode for Arduino" t)
+
+;; Proof general
+(load-file "/usr/share/emacs/site-lisp/ProofGeneral/generic/proof-site.el")
+
+(setq org-log-done 'time)
+(setq org-html-postamble nil)
+(setq org-html-head "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/bootstrap.min.css\" /> \n <link rel=\"stylesheet\" type=\"text/css\" href=\"mainstyle.css\" />")
+
+;; General emacs stuff
+(require 'wgrep)
+
+(setf inhibit-startup-screen t
+      inhibit-startup-message t
+      inhibit-startup-echo-area-message t)
+(setf initial-buffer-choice default-directory)
+(tool-bar-mode -1)
+(menu-bar-mode -1)
+
+(require 'dired-x)
+(setq-default dired-omit-files-p t)
+(setq dired-omit-files (concat dired-omit-files "\\|^\\..+$"))

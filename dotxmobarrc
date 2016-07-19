@@ -1,0 +1,32 @@
+Config { font = "-*-Fixed-Bold-R-Normal-*-13-*-*-*-*-*-*-*"
+        , borderColor = "black"
+        , border = TopB
+        , bgColor = "black"
+        , fgColor = "grey"
+        , position = TopW L 100
+        , commands = [ Run Weather "KBFI" ["-t","<tempC>C <skyCondition>","-L","18","-H","25","--normal","green","--high","red","--low","blue"] 36000
+                      , Run DynNetwork     [ "--template" , "<dev>: <tx>kB/s|<rx>kB/s"
+                             , "--Low"      , "1000"       -- units: kB/s
+                             , "--High"     , "5000"       -- units: kB/s
+                             , "--low"      , "darkgreen"
+                             , "--normal"   , "darkorange"
+                             , "--high"     , "darkred"
+                             ] 10
+ 		      ,Run CoreTemp       [ "--template" , "Temp: <core0>°C|<core1>°C|<core2>°C|<core3>°C"
+                             , "--Low"      , "70"        -- units: °C
+                             , "--High"     , "80"        -- units: °C
+                             , "--low"      , "darkgreen"
+                             , "--normal"   , "darkorange"
+                             , "--high"     , "darkred"
+                             ] 50
+                      , Run Cpu ["-L","3","-H","50","--normal","green","--high","red"] 10
+                      , Run Memory ["-t","Mem: <usedratio>%"] 10
+                      , Run Date "%a %b %_d %Y %H:%M:%S" "date" 10
+		      , Run Com "sh"["/home/ben/Scripts/tempmonitor.sh"] "temps" 10
+		      , Run StdinReader 
+                        ]
+        , sepChar = "%"
+        , alignSep = "}{"
+        , allDesktops = True
+        , template = " %cpu% | %dynnetwork% | %memory% | %StdinReader% |}{ %coretemp% | %KBFI% | <fc=#AA00FF>%date%</fc> "
+        }
